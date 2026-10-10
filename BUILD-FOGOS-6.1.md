@@ -148,6 +148,42 @@ vendor_dlkm. Then flash as in Route A step 6, and **test with
 
 ---
 
+## Reference implementation — Samsung-QTI gta9pwifi (blair 6.1)
+
+The Galaxy Tab A9+ WiFi (`gta9pwifi`) is the one SM6375 device already running
+the blair 6.1 base. Its orgs are a working reference to diff against:
+
+- `Samsung-QTI` — device tree (`device_samsung_gta9pwifi`), the 6.1 `manifest`
+  (`blair.xml` + `blair-kernel.xml`), and the kernel build scripts
+  (`android_kernel_build`, branch `kernel.lnx.6.1.r46-rel`).
+- `Samsung-QTI-Blair` — the blair 6.1 kernel module repos: audio-kernel-ar,
+  bt-kernel, camera-kernel, display-drivers, dsp-kernel, graphics-kernel,
+  mm-drivers, mmrm-driver, dataipa, data-ipa-cfg-mgr, datarmnet(-ext),
+  dataservices, touch-drivers, video-driver, synx-kernel,
+  wlan/{fw-api,platform,qca-wifi-host-cmn,qcacld-3.0}, plus
+  `android_kernel_platform_build_config` and
+  `android_kernel_platform_external_dtc`.
+
+What to take from it:
+
+- **Kernel-build tooling.** `android_kernel_build` is the `kernel/build` piece
+  Route B needs; `android_kernel_platform_external_dtc` provides `dtc`.
+- **Prebuilt-kernel model.** gta9pwifi builds the kernel as a prebuilt "kernel
+  platform" (`TARGET_USES_KERNEL_PLATFORM := true`,
+  `KERNEL_PREBUILT_DIR := device/qcom/blair-kernel`) instead of compiling it
+  inline like the fogos org — a cleaner separation for Route B.
+- **Blair DLKM source set.** A complete cross-check for the fogos modules repo.
+- **Boot-image load geometry.** gta9pwifi sets it explicitly
+  (`BOARD_KERNEL_OFFSET 0x8000`, `BOARD_RAMDISK_OFFSET 0x02000000`,
+  `BOARD_KERNEL_TAGS_OFFSET 0x01e00000`, `BOARD_DTB_OFFSET 0x01f00000`); fogos
+  does **not**, in either the 5.4 or the 6.1 tree — it relies on mkbootimg
+  defaults and the 5.4 tree booted that way, so this is *probably* fine. If a
+  hand-built boot image refuses to boot, compare these values first.
+- It also runs `androidboot.selinux=permissive`, i.e. that is normal for a
+  blair bring-up, not a fogos-specific bug.
+
+---
+
 ## Caveats (both routes)
 
 - **The 6.1 branch is WIP.** The org's own last commits on it read "STOP LOOKING
