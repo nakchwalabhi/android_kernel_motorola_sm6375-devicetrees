@@ -168,6 +168,13 @@ BLAIR_BASE_DTB += blair-malmo-base.dtb
 BLAIR_BOARDS += blair-malmo-evb-overlay.dtbo
 endif
 
+ifeq ($(CONFIG_FOGOS_DTB),y)
+BLAIR_BASE_DTB += blair-moto-fogos-base.dtb
+BLAIR_BOARDS += \
+		 blair-fogos-evt-overlay.dtbo \
+		 blair-fogos-dvt1-overlay.dtbo
+endif
+
 blair-dtb-$(CONFIG_ARCH_BLAIR) += \
     $(call add-overlays, $(BLAIR_BOARDS),$(BLAIR_BASE_DTB))
 blair-overlays-dtb-$(CONFIG_ARCH_BLAIR) += $(BLAIR_BOARDS) $(BLAIR_BASE_DTB)

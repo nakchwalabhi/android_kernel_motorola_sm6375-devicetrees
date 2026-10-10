@@ -1,0 +1,29 @@
+/* Copyright (c) 2023, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/* fogos PMIC/charger overlay.
+ * On 5.4 this file was named blair-pm6125-fogos-common-overlay.dtsi, but it
+ * already targeted PM7250B (it included holi-mtp-pm7250b.dtsi). The 6.1 tree
+ * renamed that generic layer to blair-pm7250b-moto-common-overlay.dtsi, so we
+ * now include the 6.1 equivalent.
+ */
+#include "blair-pm7250b-moto-common-overlay.dtsi"
+#include "blair-fogos-common-overlay.dtsi"
+#include "fogos-charger.dtsi"
+
+&pm7250b_charger {
+	dpdm-supply = <&usb2_phy0>;
+};
+
+&smb1394 {
+	status = "disabled";
+};

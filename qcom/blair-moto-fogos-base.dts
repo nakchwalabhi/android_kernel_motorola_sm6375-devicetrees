@@ -1,0 +1,25 @@
+/* Copyright (c) 2023, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/* fogos base DTB (blair / SM6375).
+ * Ported from the 5.4 tree: arch/arm64/boot/dts/vendor/qcom/blair-moto-fogos-base.dts
+ * The 6.1 blair DT split moves the generic moto pieces into
+ * blair-moto-common-base.dtsi (same role blair.dtsi had on 5.4).
+ */
+/dts-v1/;
+
+#include "blair-moto-common-base.dtsi"
+
+/* fogos-specific phy tweak carried over from the 5.4 base */
+&mdss_dsi_phy0 {
+	/delete-property/ qcom,dsi-pll-ssc-en;
+};
